@@ -128,7 +128,7 @@ export default function VirtualFittingRoomModal({ outfitSetId, onClose }: Props)
           </div>
           <div>
             <h3 className="font-serif text-lg font-semibold text-diamond-100 leading-tight">3D Virtual Fitting Room</h3>
-            <p className="text-[11px] text-diamond-500">{outfit.countryName} — {outfit.setName} · Drag to rotate</p>
+            <p className="text-[11px] text-diamond-500">{outfit.countryName} — {outfit.setName} · Drag to rotate · Scroll to zoom</p>
           </div>
         </div>
         <div className="flex items-center gap-2 pointer-events-auto">
