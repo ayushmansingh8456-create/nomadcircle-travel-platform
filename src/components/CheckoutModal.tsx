@@ -439,25 +439,58 @@ export default function CheckoutModal() {
               {/* STAY TAB */}
               {inclusionTab === 'stay' && (
                 <div className="animate-fade-in">
-                  {/* Hotel selector */}
-                  <div className="flex gap-2 mb-5">
-                    {partnerHotels.map((hotel) => (
-                      <button
-                        key={hotel.id}
-                        onClick={() => {
-                          setSelectedHotelId(hotel.id);
-                          setSelectedRoomId(hotel.rooms[0].id);
-                          setShowGallery(false);
-                        }}
-                        className={`flex-1 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all duration-300 ${
-                          selectedHotelId === hotel.id
-                            ? 'bg-turquoise-500/10 border-turquoise-400/40 text-turquoise-300 shadow-glow-turquoise'
-                            : 'bg-obsidian-800 border-slate-700/40 text-diamond-400 hover:border-turquoise-400/30'
-                        }`}
-                      >
-                        {hotel.category}
-                      </button>
-                    ))}
+                  {/* Hotel selector — image cards */}
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    {partnerHotels.map((hotel) => {
+                      const isSelected = selectedHotelId === hotel.id;
+                      return (
+                        <button
+                          key={hotel.id}
+                          onClick={() => {
+                            setSelectedHotelId(hotel.id);
+                            setSelectedRoomId(hotel.rooms[0].id);
+                            setShowGallery(false);
+                          }}
+                          className={`group relative rounded-xl overflow-hidden border-2 transition-all duration-300 text-left ${
+                            isSelected
+                              ? 'border-turquoise-400 shadow-glow-turquoise'
+                              : 'border-slate-700/40 hover:border-turquoise-400/30'
+                          }`}
+                        >
+                          {/* Hero image */}
+                          <div className="relative h-28 overflow-hidden">
+                            <img
+                              src={hotel.image}
+                              alt={hotel.name}
+                              loading="lazy"
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                            {/* Rating badge */}
+                            <div className="absolute top-2 right-2 flex items-center gap-0.5 px-2 py-1 rounded-full bg-slate-950/70 backdrop-blur-sm border border-gold-400/30">
+                              {Array.from({ length: hotel.rating }).map((_, i) => (
+                                <Star key={i} className="w-2.5 h-2.5 text-gold-400 fill-gold-400" />
+                              ))}
+                            </div>
+                            {/* Selected checkmark */}
+                            {isSelected && (
+                              <div className="absolute top-2 left-2 w-5 h-5 rounded-full bg-turquoise-400 flex items-center justify-center">
+                                <Check className="w-3 h-3 text-obsidian-950" strokeWidth={3} />
+                              </div>
+                            )}
+                          </div>
+                          {/* Text content */}
+                          <div className="px-3 py-2.5 bg-obsidian-800/80">
+                            <p className={`text-[11px] font-bold uppercase tracking-wide ${isSelected ? 'text-turquoise-300' : 'text-diamond-400'}`}>
+                              {hotel.category}
+                            </p>
+                            <p className={`text-xs font-semibold truncate mt-0.5 ${isSelected ? 'text-turquoise-200' : 'text-diamond-200'}`}>
+                              {hotel.name}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
 
                   {/* Featured hotel photo */}
