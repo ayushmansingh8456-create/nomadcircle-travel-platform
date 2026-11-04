@@ -30,6 +30,10 @@ export default function DragCarousel({ children }: DragCarouselProps) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (x.get() < -maxOffset) animate(x, -maxOffset, { type: 'spring', stiffness: 260, damping: 32, mass: 0.8 });
+  }, [maxOffset, x]);
+
   const getStep = () => {
     const first = trackRef.current?.children[0] as HTMLElement | undefined;
     return first ? first.offsetWidth + GAP : 0;

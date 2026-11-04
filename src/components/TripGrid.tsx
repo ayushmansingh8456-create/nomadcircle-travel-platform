@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Flame, ArrowUp } from 'lucide-react';
 import { trips } from '@/data/trips';
+import { vibes, type VibeId } from '@/data/vibes';
 import TripCard from './TripCard';
 import Reveal from './motion/Reveal';
 import TiltCard from './motion/TiltCard';
 import SplitWords from './motion/SplitWords';
 import ParallaxLayer from './motion/ParallaxLayer';
 
-export default function TripGrid() {
+export default function TripGrid({ vibeFilter }: { vibeFilter: VibeId | null }) {
   const [showAllTrips, setShowAllTrips] = useState(false);
-  const visibleTrips = showAllTrips ? trips : trips.slice(0, 3);
+  const matchingTrips = vibeFilter ? trips.filter((trip) => vibes[vibeFilter].tripIds.includes(trip.id)) : trips;
+  const visibleTrips = showAllTrips ? matchingTrips : matchingTrips.slice(0, 3);
 
   return (
     <section id="trips" className="relative overflow-hidden py-20 lg:py-28 bg-obsidian-950">

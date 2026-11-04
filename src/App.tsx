@@ -10,6 +10,8 @@ import PackingAssistant from '@/components/PackingAssistant';
 import CheckoutModal from '@/components/CheckoutModal';
 import ShoppingBagSidebar from '@/components/ShoppingBagSidebar';
 import AuthModal from '@/components/AuthModal';
+import VibeMatcher from '@/components/VibeMatcher';
+import { type VibeSelection } from '@/data/vibes';
 import { CheckoutProvider } from '@/context/CheckoutContext';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
@@ -20,6 +22,9 @@ type TripType = 'crew' | 'stranger';
 export default function App() {
   const [tripType, setTripType] = useState<TripType>('stranger');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [vibeSelection, setVibeSelection] = useState<VibeSelection | null>(null);
+  const [vibeFilterOn, setVibeFilterOn] = useState(false);
+  const activeVibe = vibeFilterOn && vibeSelection ? vibeSelection.vibe : null;
 
   return (
     <AuthProvider>
@@ -30,8 +35,21 @@ export default function App() {
             <Navbar onAuthClick={() => setAuthModalOpen(true)} />
             <main>
               <Hero tripType={tripType} onTripTypeChange={setTripType} />
-              <TripGrid />
-              <DestinationWardrobe />
+              <TripGrid vibeFilter={activeVibe} />
+              <VibeMatcher
+                selection={vibeSelection}
+                filterOn={vibeFilterOn}
+                onComplete={(selection) => {
+                  setVibeSelection(selection);
+                  setVibeFilterOn(true);
+                }}
+                onReset={() => {
+                  setVibeSelection(null);
+                  setVibeFilterOn(false);
+                }}
+                onFilterChange={setVibeFilterOn}
+              />
+              <DestinationWardrobe vibeFilter={activeVibe} />
               <Boutique />
               <CohortLounge />
               <CohortRadar />

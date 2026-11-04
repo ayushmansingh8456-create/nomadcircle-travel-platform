@@ -8,6 +8,7 @@ import VirtualFittingRoomModal from './VirtualFittingRoomModal';
 import SplitWords from './motion/SplitWords';
 import ParallaxLayer from './motion/ParallaxLayer';
 import DragCarousel from './motion/DragCarousel';
+import { vibes, type VibeId } from '@/data/vibes';
 
 const accentGlow: Record<string, { border: string; shadow: string; text: string; bg: string; gradient: string }> = {
   turquoise: {
@@ -33,11 +34,14 @@ const accentGlow: Record<string, { border: string; shadow: string; text: string;
   },
 };
 
-export default function DestinationWardrobe() {
+export default function DestinationWardrobe({ vibeFilter }: { vibeFilter: VibeId | null }) {
   const [selectedCountry, setSelectedCountry] = useState<WardrobeCountry | null>(null);
   const [fittingOutfitId, setFittingOutfitId] = useState<string | null>(null);
   const { addToCart } = useCart();
   const { format } = useCurrency();
+  const visibleCountries = vibeFilter
+    ? wardrobeCountries.filter((country) => vibes[vibeFilter].wardrobeCountryIds.includes(country.id))
+    : wardrobeCountries;
 
   if (selectedCountry) {
     const accent = accentGlow[selectedCountry.accent];
@@ -215,8 +219,11 @@ export default function DestinationWardrobe() {
         </div>
 
         {/* Country grid */}
+        {visibleCountries.length === 0 ? (
+          <p className="text-center text-diamond-400 py-12">No rental sets for this vibe yet. Turn off the vibe filter to browse every destination.</p>
+        ) : (
         <DragCarousel>
-          {wardrobeCountries.map((country) => {
+          {visibleCountries.map((country) => {
             const accent = accentGlow[country.accent];
             return (
               <button
@@ -259,6 +266,7 @@ export default function DestinationWardrobe() {
             );
           })}
         </DragCarousel>
+        )}
       </div>
     </section>
   );
