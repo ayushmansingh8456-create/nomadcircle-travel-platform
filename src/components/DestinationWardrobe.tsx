@@ -5,6 +5,9 @@ import { getOutfitSetsByCountry, type OutfitSet } from '@/data/wardrobeData';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import VirtualFittingRoomModal from './VirtualFittingRoomModal';
+import SplitWords from './motion/SplitWords';
+import ParallaxLayer from './motion/ParallaxLayer';
+import DragCarousel from './motion/DragCarousel';
 
 const accentGlow: Record<string, { border: string; shadow: string; text: string; bg: string; gradient: string }> = {
   turquoise: {
@@ -188,9 +191,11 @@ export default function DestinationWardrobe() {
   }
 
   return (
-    <section id="wardrobe" className="relative py-20 lg:py-28 bg-obsidian-900">
+    <section id="wardrobe" className="relative overflow-hidden py-20 lg:py-28 bg-obsidian-900">
       {/* Ambient glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-gold-500/5 blur-[140px] pointer-events-none" />
+      <ParallaxLayer speed={0.3}>
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-gold-500/5 blur-[140px]" />
+      </ParallaxLayer>
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         {/* Header */}
@@ -200,9 +205,9 @@ export default function DestinationWardrobe() {
             <span className="text-xs uppercase tracking-[0.2em] font-semibold text-gold-400">The Destination Wardrobe</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold text-diamond-100 leading-[1.1] text-balance max-w-3xl mx-auto">
-            Rent the Vibe.
+            <SplitWords text="Rent the Vibe." />
             <br />
-            <span className="italic text-turquoise-400">Take Your Own Flawless Photos.</span>
+            <SplitWords text="Take Your Own Flawless Photos." className="italic text-turquoise-400" />
           </h2>
           <p className="mt-5 text-diamond-400 max-w-xl mx-auto leading-relaxed">
             Pick a country, browse our photo-ready rental collection, and arrive with outfits designed to look stunning against that destination's iconic backdrops.
@@ -210,14 +215,14 @@ export default function DestinationWardrobe() {
         </div>
 
         {/* Country grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+        <DragCarousel>
           {wardrobeCountries.map((country) => {
             const accent = accentGlow[country.accent];
             return (
               <button
                 key={country.id}
                 onClick={() => setSelectedCountry(country)}
-                className={`group relative flex flex-col rounded-xl3 overflow-hidden bg-slate-950 border ${accent.border} ${accent.shadow} transition-all duration-500 hover:-translate-y-2 text-left`}
+                className={`group relative flex flex-col rounded-xl3 overflow-hidden bg-slate-950 border ${accent.border} ${accent.shadow} transition-all duration-500 hover:-translate-y-2 text-left w-[300px] sm:w-[340px] lg:w-[380px] shrink-0`}
               >
                 {/* Image */}
                 <div className="relative h-56 sm:h-64 overflow-hidden">
@@ -253,7 +258,7 @@ export default function DestinationWardrobe() {
               </button>
             );
           })}
-        </div>
+        </DragCarousel>
       </div>
     </section>
   );

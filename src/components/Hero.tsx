@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import SearchWidget from './SearchWidget';
 import { WireframeGlobe, ParticleField, DestinationMarkers } from './hero/GlobeScene';
 import FloatingCards from './hero/FloatingCards';
+import SplitWords from './motion/SplitWords';
+import ParallaxLayer from './motion/ParallaxLayer';
 
 type TripType = 'crew' | 'stranger';
 
@@ -64,11 +66,11 @@ export default function Hero({ tripType, onTripTypeChange }: HeroProps) {
       </div>
 
       {/* Radial neon glow behind globe */}
-      <div className="absolute inset-0 z-[3] pointer-events-none">
+      <ParallaxLayer speed={0.35} className="z-[3]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-turquoise-500/8 blur-[140px]" />
         <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] rounded-full bg-coral-500/6 blur-[100px]" />
         <div className="absolute bottom-1/4 left-1/5 w-[250px] h-[250px] rounded-full bg-gold-500/5 blur-[90px]" />
-      </div>
+      </ParallaxLayer>
 
       {/* Vignette overlay for depth */}
       <div className="absolute inset-0 z-[10] pointer-events-none bg-gradient-to-b from-transparent via-transparent to-[#06070B]" />
@@ -110,7 +112,7 @@ export default function Hero({ tripType, onTripTypeChange }: HeroProps) {
             textShadow: '0 2px 30px rgba(0,0,0,0.6), 0 0 60px rgba(0,217,208,0.08)',
           }}
         >
-          Travel together,
+          <SplitWords text="Travel together," />
           <br />
           <span
             className="italic"
