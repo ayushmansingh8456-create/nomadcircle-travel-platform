@@ -6,7 +6,7 @@ import DestinationWardrobe from '@/components/DestinationWardrobe';
 import Boutique from '@/components/Boutique';
 import CohortLounge from '@/components/CohortLounge';
 import CohortRadar from '@/components/CohortRadar';
-import PackingAssistant from '@/components/PackingAssistant';
+import NomadCapsuleBuilder from '@/components/NomadCapsuleBuilder';
 import CheckoutModal from '@/components/CheckoutModal';
 import ShoppingBagSidebar from '@/components/ShoppingBagSidebar';
 import AuthModal from '@/components/AuthModal';
@@ -53,7 +53,7 @@ export default function App() {
               <Boutique />
               <CohortLounge />
               <CohortRadar />
-              <PackingAssistant />
+              <NomadCapsuleBuilder />
             </main>
             <ShoppingBagSidebar />
             <CheckoutModal />
