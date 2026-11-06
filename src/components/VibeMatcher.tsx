@@ -48,7 +48,7 @@ export default function VibeMatcher({ selection, filterOn, onComplete, onReset, 
   };
 
   return (
-    <section id="vibe" className="relative overflow-hidden py-20 lg:py-28 bg-obsidian-950">
+    <section id="vibe" className="relative overflow-hidden py-20 lg:py-28">
       <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[640px] h-[360px] rounded-full bg-turquoise-500/8 blur-[140px]" />
 
       <div className="relative mx-auto max-w-5xl px-5 sm:px-8">

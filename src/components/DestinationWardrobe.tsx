@@ -58,7 +58,7 @@ export default function DestinationWardrobe({ vibeFilter }: { vibeFilter: VibeId
 
     return (
       <>
-        <section id="wardrobe" className="relative py-20 lg:py-28 bg-obsidian-900">
+        <section id="wardrobe" className="relative py-20 lg:py-28">
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             {/* Back button */}
             <button
@@ -195,7 +195,7 @@ export default function DestinationWardrobe({ vibeFilter }: { vibeFilter: VibeId
   }
 
   return (
-    <section id="wardrobe" className="relative overflow-hidden py-20 lg:py-28 bg-obsidian-900">
+    <section id="wardrobe" className="relative overflow-hidden py-20 lg:py-28">
       {/* Ambient glow */}
       <ParallaxLayer speed={0.3}>
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-gold-500/5 blur-[140px]" />

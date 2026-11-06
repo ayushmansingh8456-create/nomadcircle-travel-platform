@@ -76,7 +76,7 @@ export default function NomadCapsuleBuilder() {
   const slots = Array.from({ length: CAPSULE_SIZE }, (_, i) => selectedPieces[i] ?? null);
 
   return (
-    <section className="relative py-20 lg:py-28 bg-obsidian-950 overflow-hidden">
+    <section className="relative py-20 lg:py-28 overflow-hidden">
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-turquoise-500/8 blur-[140px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">

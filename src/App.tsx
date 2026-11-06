@@ -7,6 +7,7 @@ import Boutique from '@/components/Boutique';
 import CohortLounge from '@/components/CohortLounge';
 import CohortRadar from '@/components/CohortRadar';
 import NomadCapsuleBuilder from '@/components/NomadCapsuleBuilder';
+import StarfieldBackground from '@/components/StarfieldBackground';
 import CheckoutModal from '@/components/CheckoutModal';
 import ShoppingBagSidebar from '@/components/ShoppingBagSidebar';
 import AuthModal from '@/components/AuthModal';
@@ -31,7 +32,8 @@ export default function App() {
       <CurrencyProvider>
         <CheckoutProvider>
           <CartProvider>
-            <div className="min-h-screen bg-obsidian-950">
+            <div className="relative min-h-screen">
+            <StarfieldBackground />
             <Navbar onAuthClick={() => setAuthModalOpen(true)} />
             <main>
               <Hero tripType={tripType} onTripTypeChange={setTripType} />

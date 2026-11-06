@@ -14,7 +14,7 @@ export default function TripGrid({ vibeFilter }: { vibeFilter: VibeId | null }) 
   const visibleTrips = showAllTrips ? matchingTrips : matchingTrips.slice(0, 3);
 
   return (
-    <section id="trips" className="relative overflow-hidden py-20 lg:py-28 bg-obsidian-950">
+    <section id="trips" className="relative overflow-hidden py-20 lg:py-28">
       <ParallaxLayer speed={0.25}>
         <div className="absolute top-1/4 right-0 w-[480px] h-[480px] rounded-full bg-coral-500/5 blur-[140px]" />
       </ParallaxLayer>

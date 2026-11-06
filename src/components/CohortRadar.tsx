@@ -15,7 +15,7 @@ export default function CohortRadar() {
   };
 
   return (
-    <section className="relative py-20 lg:py-28 bg-obsidian-900">
+    <section className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="text-center mb-10 lg:mb-14">
           <div className="flex items-center justify-center gap-2 mb-3">

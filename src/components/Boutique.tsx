@@ -31,7 +31,7 @@ export default function Boutique() {
   };
 
   return (
-    <section id="boutique" className="relative py-20 lg:py-28 bg-obsidian-900">
+    <section id="boutique" className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 lg:mb-14">

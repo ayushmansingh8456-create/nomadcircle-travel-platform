@@ -11,7 +11,7 @@ export default function CohortLounge() {
   const [activeTab, setActiveTab] = useState<Tab>('lounge');
 
   return (
-    <section id="community" className="relative py-20 lg:py-28 bg-obsidian-950">
+    <section id="community" className="relative py-20 lg:py-28">
       {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-turquoise-500/8 blur-[140px] pointer-events-none" />
 

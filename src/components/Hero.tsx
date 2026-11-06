@@ -40,7 +40,7 @@ export default function Hero({ tripType, onTripTypeChange }: HeroProps) {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 bg-obsidian-950">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
       {/* Dark midnight gradient base */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#06070B] via-[#0B0C10] to-[#080910]" />
 
