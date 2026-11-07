@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Camera, ArrowLeft, MapPin, Sparkles, Check, ShoppingBag, Shirt, Layers } from 'lucide-react';
+import { Camera, ArrowLeft, MapPin, Check, ShoppingBag, Shirt, Layers } from 'lucide-react';
 import { wardrobeCountries, type WardrobeCountry } from '@/data/wardrobe';
 import { getOutfitSetsByCountry, type OutfitSet } from '@/data/wardrobeData';
 import { useCart } from '@/context/CartContext';
@@ -240,11 +240,6 @@ export default function DestinationWardrobe({ vibeFilter }: { vibeFilter: VibeId
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className={`absolute inset-0 bg-gradient-to-t ${accent.gradient} from-slate-950 via-slate-950/30 to-transparent`} />
-                  {/* Sparkle accent */}
-                  <div className={`absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full ${accent.bg} ${accent.text} text-[10px] font-bold uppercase tracking-wide border ${accent.border} backdrop-blur-sm`}>
-                    <Sparkles className="w-3 h-3" strokeWidth={2.5} />
-                    {country.items.length} Fits
-                  </div>
                 </div>
 
                 {/* Body */}
