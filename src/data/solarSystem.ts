@@ -34,13 +34,6 @@ export interface Planet {
 
 export const ORBIT_TILT = 0.45;
 
-export const SUN = {
-  radius: 34,
-  colors: { core: '#fffdf2', bright: '#fff3b0', flame: '#ffa726', ember: '#ff5e1f' },
-  corona: '255, 190, 80',
-  halo: '34, 211, 238',
-};
-
 export const PLANETS: Planet[] = [
   {
     id: 'mercury',

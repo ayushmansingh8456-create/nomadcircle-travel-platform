@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { STAR_LAYERS } from '@/data/deepSpace';
-import { PLANETS, SUN, ORBIT_TILT, type Planet } from '@/data/solarSystem';
+import { PLANETS, ORBIT_TILT, type Planet } from '@/data/solarSystem';
 import { createStarField, drawBackdrop, renderNebulaLayer, type StarField } from '@/components/space/drawBackdrop';
 import { drawOrbitRing, drawOrbitTrail } from '@/components/space/drawOrbit';
 import { drawPlanet } from '@/components/space/drawPlanet';
-import { drawSun } from '@/components/space/drawSun';
 
 const MAX_DPR = 2;
 
@@ -97,7 +96,6 @@ export default function StarfieldBackground() {
         );
 
       placed.filter((p) => p.depth < 0).forEach(drawPlacedPlanet);
-      drawSun(ctx, layout.cx, layout.cy, SUN.radius * layout.unit, elapsed);
       placed.filter((p) => p.depth >= 0).forEach(drawPlacedPlanet);
 
       frameId = requestAnimationFrame(draw);
