@@ -1,29 +1,52 @@
 import { useEffect, useRef } from 'react';
-import { STAR_LAYERS } from '@/data/deepSpace';
-import { PLANETS, ORBIT_TILT, type Planet } from '@/data/solarSystem';
-import { createStarField, drawBackdrop, renderNebulaLayer, type StarField } from '@/components/space/drawBackdrop';
-import { drawOrbitRing, drawOrbitTrail } from '@/components/space/drawOrbit';
-import { drawPlanet } from '@/components/space/drawPlanet';
 
+const TOP_COLOR = '#090b10';
+const BOTTOM_COLOR = '#020305';
+const GLOW_RGB = '6, 182, 212';
 const MAX_DPR = 2;
+const PIXELS_PER_STAR = 2600;
+const MIN_STARS = 120;
+const MAX_STARS = 600;
+const GLOW_SIZE = 64;
 
-interface Body {
-  planet: Planet;
-  angle: number;
-  spin: number;
+interface Star {
+  x: number;
+  y: number;
+  radius: number;
+  speed: number;
+  drift: number;
+  phase: number;
+  twinkleSpeed: number;
+  alpha: number;
 }
 
-interface Layout {
-  cx: number;
-  cy: number;
-  rmax: number;
-  unit: number;
+function createStar(width: number, height: number): Star {
+  return {
+    x: Math.random() * width,
+    y: Math.random() * height,
+    radius: 0.4 + Math.random() * 1.2,
+    speed: 4 + Math.random() * 16,
+    drift: (Math.random() - 0.5) * 4,
+    phase: Math.random() * Math.PI * 2,
+    twinkleSpeed: 0.8 + Math.random() * 2.2,
+    alpha: 0.4 + Math.random() * 0.6,
+  };
 }
 
-function computeLayout(width: number, height: number): Layout {
-  const rmax = Math.min(width * 0.46, (height * 0.46) / ORBIT_TILT);
-  const unit = Math.min(1.5, Math.max(0.55, rmax / 420));
-  return { cx: width / 2, cy: height / 2, rmax, unit };
+function createGlowSprite(): HTMLCanvasElement {
+  const sprite = document.createElement('canvas');
+  sprite.width = GLOW_SIZE;
+  sprite.height = GLOW_SIZE;
+  const ctx = sprite.getContext('2d');
+  if (!ctx) return sprite;
+  const center = GLOW_SIZE / 2;
+  const gradient = ctx.createRadialGradient(center, center, 0, center, center, center);
+  gradient.addColorStop(0, `rgba(${GLOW_RGB}, 1)`);
+  gradient.addColorStop(0.25, `rgba(${GLOW_RGB}, 0.5)`);
+  gradient.addColorStop(1, `rgba(${GLOW_RGB}, 0)`);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, GLOW_SIZE, GLOW_SIZE);
+  return sprite;
 }
 
 export default function StarfieldBackground() {
@@ -34,13 +57,11 @@ export default function StarfieldBackground() {
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx) return;
 
-    const starFields: StarField[] = STAR_LAYERS.map(createStarField);
-    const bodies: Body[] = PLANETS.map((planet) => ({ planet, angle: planet.startAngle, spin: 0 }));
+    const glow = createGlowSprite();
     let width = 0;
     let height = 0;
-    let layout = computeLayout(0, 0);
-    let nebula: HTMLCanvasElement | null = null;
-    let elapsed = 0;
+    let stars: Star[] = [];
+    let background: CanvasGradient | null = null;
     let frameId = 0;
     let lastTime = 0;
 
@@ -51,53 +72,44 @@ export default function StarfieldBackground() {
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      layout = computeLayout(width, height);
-      nebula = renderNebulaLayer(width, height);
+
+      background = ctx.createLinearGradient(0, 0, 0, height);
+      background.addColorStop(0, TOP_COLOR);
+      background.addColorStop(1, BOTTOM_COLOR);
+
+      const count = Math.min(MAX_STARS, Math.max(MIN_STARS, Math.round((width * height) / PIXELS_PER_STAR)));
+      stars = Array.from({ length: count }, () => createStar(width, height));
     };
 
     const draw = (time: number) => {
       const dt = lastTime ? Math.min((time - lastTime) / 1000, 0.1) : 0;
       lastTime = time;
-      elapsed += dt;
 
-      for (const body of bodies) {
-        body.angle += body.planet.orbitalSpeed * dt;
-        body.spin += body.planet.spinSpeed * dt;
+      ctx.fillStyle = background ?? BOTTOM_COLOR;
+      ctx.fillRect(0, 0, width, height);
+
+      for (const star of stars) {
+        star.y -= star.speed * dt;
+        star.x += star.drift * dt;
+        if (star.y < -4) {
+          star.y = height + 4;
+          star.x = Math.random() * width;
+        }
+        if (star.x < -4) star.x = width + 4;
+        else if (star.x > width + 4) star.x = -4;
+
+        const twinkle = 0.55 + 0.45 * Math.sin((time / 1000) * star.twinkleSpeed + star.phase);
+        const glowSize = star.radius * 8;
+        ctx.globalAlpha = star.alpha * twinkle;
+        ctx.drawImage(glow, star.x - glowSize / 2, star.y - glowSize / 2, glowSize, glowSize);
+
+        ctx.fillStyle = '#d9fbff';
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
       }
 
-      drawBackdrop(ctx, width, height, elapsed, nebula, starFields);
-
-      for (const body of bodies) {
-        const orbitRadius = body.planet.orbit * layout.rmax;
-        drawOrbitRing(ctx, layout.cx, layout.cy, orbitRadius);
-        drawOrbitTrail(ctx, layout.cx, layout.cy, orbitRadius, body.angle, body.planet.atmosphere);
-      }
-
-      const placed = bodies.map((body) => {
-        const orbitRadius = body.planet.orbit * layout.rmax;
-        return {
-          body,
-          x: layout.cx + orbitRadius * Math.cos(body.angle),
-          y: layout.cy + orbitRadius * ORBIT_TILT * Math.sin(body.angle),
-          depth: Math.sin(body.angle),
-        };
-      });
-
-      const drawPlacedPlanet = (p: (typeof placed)[number]) =>
-        drawPlanet(
-          ctx,
-          p.body.planet,
-          p.x,
-          p.y,
-          p.body.planet.radius * layout.unit,
-          p.body.spin,
-          layout.cx,
-          layout.cy,
-        );
-
-      placed.filter((p) => p.depth < 0).forEach(drawPlacedPlanet);
-      placed.filter((p) => p.depth >= 0).forEach(drawPlacedPlanet);
-
+      ctx.globalAlpha = 1;
       frameId = requestAnimationFrame(draw);
     };
 
